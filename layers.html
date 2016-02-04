@@ -1,0 +1,279 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.11/themes/css/cartodb.css" />
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.11/cartodb.js"></script>
+    <style>
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    #map {
+        width: 100%;
+        height: 100%;
+        background: black;
+    }
+
+    #menu {
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        width: 400px;
+        height: 60px;
+        background: transparent;
+        z-index: 10;
+    }
+
+    #menu a {
+        margin: 15px 10px 0 0;
+        float: right;
+        vertical-align: baseline;
+        width: 70px;
+        padding: 10px;
+        text-align: center;
+        font: bold 11px "Helvetica", Arial;
+        line-height: normal;
+        color: #555;
+        border-radius: 4px;
+        border: 1px solid #777777;
+        background: #ffffff;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    #menu a.selected,
+    #menu a:hover {
+        color: #F84F40;
+    }
+
+    .cartodb-layer-selector-box,
+    .cartodb-searchbox,
+    .cartodb-share {
+        display: none !important;
+    }
+    </style>
+
+
+       <!DOCTYPE html>
+<html>
+  <head>
+    <title>Franks CartoDB for Trish</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+
+    <style>
+      html, body{
+        height: 100%;
+        width:100%;
+        padding: 0;
+        margin: 0;
+      }
+
+      #map{
+        height:100%;
+        }
+
+      #content{
+        height:100%;
+        overflow-y:scroll;
+        z-index: 100;
+      }
+      .no-padding {
+        padding-left:0px;
+        padding-right: 0px;
+      }
+     
+     .nav>li {
+          position: relative;
+    display: block;
+     }
+     .navbar 
+     {margin-bottom: 0px;}
+
+     .wrapper{
+      position:absolute;
+      top:80px;
+      left:20px;
+      width:30%;
+      height:60%;
+      overflow-y:scroll;
+    z-index: 1000;
+    margin: 0;
+    padding: 10px 15px 10px 15px;
+    background-color: #fff;
+    background-color: rgba(255,255,255,0.95);
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
+    border-radius: 4px;
+     }
+
+     .cartodb-zoom {
+      float:right;
+
+      }
+
+    </style>
+
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+    <link rel="stylesheet" href="carto.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-static-top" style="margin-bottom:0px;">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand">Trish's Project</a>
+        </div>
+        <div id="navbar">
+          <ul id="sections" class="nav navbar-nav">
+            <li>first menu item</li>
+            <li>second menu item</li>
+          </ul>
+        </div>
+
+      </div>
+
+    </nav>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="map-container no-padding col-sm-12" style="padding-left:0px; padding-right:0px;">
+          
+        <!-- Created a div to hold the map -->
+          <div id="map" >
+          </div>
+
+          <!-- the wrapper div contains everything in the text box -->
+          <div class="wrapper">
+            <h1> Hi Frank!</h1>
+            <p>
+             These are some sweet maps
+         </p>
+
+
+              <!-- create a button group to control the layers -->
+              <div class="btn-group layer-select">
+               <btn class="btn active first btn-info" id="0" href="#first" >Mich Index</btn>
+                <btn class="btn second btn-info"  id="1" href="#second" >Mich Temp </btn>
+                <btn class="btn third btn-info" id="2" href="#third" >Heat Island Risk</btn>
+            </div>
+
+            <!-- created a div to hold the potential legend or text information -->
+            <div class="leg">
+              Here is the legend for the first map
+            </div>
+
+
+          </div>
+        </div>
+        
+      </div>
+    <div>
+    <!-- include cartodb.js library -->
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<script>
+
+
+
+      function main() {        
+        //store the url for the map in a variable
+        var url = 'https://fromo.cartodb.com/api/v2/viz/2255244c-b887-11e5-8db1-0e787de82d45/viz.json';
+
+        // create a cartoDB viz
+        var visualizacion = cartodb.createVis("map", url)
+            .done(function(vis, layers) {
+
+                // defining which layer we are using, note that this is not the sublayer
+                // the cartodb layer is [1] as compared to the tile layer which is [0]
+                layer = layers[1];
+            
+
+            //create sublayers to that we can set infobox or infowindow per sublayer
+
+              //first sublayer
+              var michigan_index = layers[1].getSubLayer(0);
+              michigan_index.setInteraction(true);
+
+              //second sublayer
+              var michigan_temp = layers[1].getSubLayer(1);
+              michigan_temp.setInteraction(true);
+
+              //third sublayer
+              var heat_island = layers[1].getSubLayer(2);
+              heat_island.setInteraction(true);
+
+              //create overlays specific to each layer
+              vis.addOverlay({
+              layer: michigan_index,
+              type: 'infobox',
+              template: '<div>Michigan Index  {{geoid}} {{cal_index}}</div>',
+              width: 200,
+              position: 'bottom|right'
+              });
+
+              vis.addOverlay({
+              layer: michigan_temp,
+              type: 'infobox',
+              template: '<div><h1>Michigan Temp</h1>{{type}} {{under5}}</div>',
+              width: 200,
+              position: 'bottom|right'
+              });
+
+              vis.addOverlay({
+              layer: heat_island,
+              type: 'infobox',
+              template: '<div><h1>Heat Island</h1>{{geoid}} {{cal_index}}</div>',
+              width: 200,
+              position: 'bottom|right'
+              });
+
+
+            });
+    }
+
+//created an array for the text holder
+   
+   var legend1 = '<table><tr><td>1</td><td style="background-color:#91bfdb;height:20px;width:20px;"></td><td>Minimum</td></tr><tr><td>2</td><td style="background-color:#7fbf7b;height:20px;width:20px;"></td><td>Low</td></tr><tr><td>3</td><td style="background-color:#ffffbf;height:20px;width:20px;"></td><td>Moderate</td></tr><tr><td>4</td><td style="background-color:#fc8d59;height:20px;width:20px;"></td><td>High</td></tr><tr><td>5</td><td style="background-color:#e71c1c;height:20px;width:20px;"></td><td>Maximum</td></tr></table</div>';
+
+   var text = [legend1, "second", "third"];
+
+
+
+
+    $('.btn').click(function() {
+
+         $('.btn').removeClass('active');
+          $('.btn').addClass('active');
+
+        layer.getSubLayers().forEach(function(i) {
+            i.hide()
+        });
+
+       layer.getSubLayer($(this).attr('id')).show();
+       $('.leg').empty().append(text[$(this).attr('id')]);
+
+
+    });
+
+      //when the browser loads call the main function to load the map
+      window.onload = main;
+
+      //resize the map so that it's big...only relevant if using bootstrap multi column
+      $(window).resize(function () {
+          var h = $(window).height(),
+          offsetTop = 10; // Calculate the top offset
+          $('#map').css('height', (h - offsetTop));
+          $('#content').css('height', (h - offsetTop));
+        }).resize();
+
+
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+  </body>
+</html>
