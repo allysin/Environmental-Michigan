@@ -236,15 +236,16 @@
             });
     }
 
-//created an array for the text holder
-   
+
+//html/css for the legends
    var legend1 = '<table><tr><td>1</td><td style="background-color:#91bfdb;height:20px;width:20px;"></td><td>Minimum</td></tr><tr><td>2</td><td style="background-color:#7fbf7b;height:20px;width:20px;"></td><td>Low</td></tr><tr><td>3</td><td style="background-color:#ffffbf;height:20px;width:20px;"></td><td>Moderate</td></tr><tr><td>4</td><td style="background-color:#fc8d59;height:20px;width:20px;"></td><td>High</td></tr><tr><td>5</td><td style="background-color:#e71c1c;height:20px;width:20px;"></td><td>Maximum</td></tr></table</div>';
 
+//created an array for the legends
    var text = [legend1, "second", "third"];
 
 
 
-
+//on .btn class click, change the active button style, change the layer by btn id, and add the text to the div
     $('.btn').click(function() {
 
          $('.btn').removeClass('active');
